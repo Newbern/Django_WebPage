@@ -1,0 +1,78 @@
+{% extends "main/base.html" %}
+
+{% block title %}Edwards-{{ part.name }}{% endblock %}
+
+{% block styles %}
+    <style>
+    .part-items {
+        display: flex;
+    }
+    .part-items img{
+        left:0;
+        top:0;
+
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <!-- Whole Container -->
+    <div class="part-items">
+        <!-- Left side Container -->
+        <!-- Image -->
+        <img src="{{ part.image.url }}" width="75%" alt="{{ part.name }}">
+        <!-- Right side Container -->
+        <div style="padding-left:50px; display:flex">
+            <!-- Left Side -->
+            <div style="width: 75%">
+                <!-- Parts Header -->
+                <h1 style="text-align:center">{{ part.name }}</h1>
+                <!-- Paragraph -->
+                <p >{{ part.summary }}</p>
+            </div>
+            <!-- Right Side -->
+            <div style="width:25%;">
+                <!-- Amount in Inventory -->
+                <div style="text-align:center; display:block; padding-bottom:25px">
+                    <h2>Amount Available</h2>
+                    <p>{{ Inventory }}</p>
+                </div>
+                <!-- Cart Count -->
+                <div>
+                    <h3 style="text-align: center">Add</h3>
+                    <div style="display:flex; justify-content: center; align-items: center; gap:25px">
+                        <button onclick="Add(-1)">&minus;</button>
+                        <p id="amount">0</p>
+                        <button onclick="Add(1)">&plus;</button>
+                    </div>
+                    <!-- Submit Button -->
+                    <form method="GET">
+                        {% csrf_token %}
+                        <input type="hidden" name="part" value="{{ part.name }}">
+                        <input type="hidden" name="cart_num" id="cart_num" value="0">
+                        <button type="submit" style="margin:auto; display:flex" name="part" value="{{ part.name }}">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block Javascript %}
+    <script>
+        let num = 0;
+        let max = {{ Inventory }}
+        function Add(range) {
+            if (num+range > 0) {
+                num += range
+                if (num < 0) {
+                    num = 0
+                }
+            }
+            else {
+                num = 0
+            }
+            document.getElementById('amount').innerText = num;
+            document.getElementById("cart_num").value = num
+        }
+    </script>
+{% endblock %}

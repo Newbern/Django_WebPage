@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+
+{% block styles %}
+    <style>
+
+        /* Parts Container containing all items */
+        .part-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            flex-direction: row;
+
+        }
+        .part-container button:hover{
+            background-color: red;
+        }
+
+        /* Button Styling */
+        .part-button {
+            background-color: orange;
+            text-align: center;
+            font-size: 25px;
+            border: none;
+            cursor: pointer;
+
+        }
+        .part-button img {
+            width: 250px;
+            height: 250px
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h1 style="text-align:center">Parts to Order</h1>
+
+    <!-- Parts Box's -->
+    <form method="GET" action="{% url 'parts' %}">
+        <div class="part-container">
+            {% for i in items %}
+                <button class="part-button" name="part" value="{{ i }}">
+                    <img src="{{ i.image.url }}" alt="{{ i.name }}">
+                    <p>{{ i.name }}: {{ i.price }}</p>
+                </button>
+            {% endfor %}
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block Javascript %}
+    <script>
+
+    </script>
+{% endblock %}

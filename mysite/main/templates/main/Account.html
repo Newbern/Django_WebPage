@@ -1,0 +1,25 @@
+{%  extends "main/base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block styles %}
+    <style>
+    .account-settings {
+        justify-content: center;
+        background-color: gray;
+        padding-left:150px
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <h1 style="text-align: center">Account Settings</h1>
+
+    <!-- Form -->
+    <form class="account-settings" method="post">
+        {% csrf_token %}
+        {{ forms }}
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}

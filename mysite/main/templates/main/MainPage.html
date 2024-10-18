@@ -1,0 +1,105 @@
+{% extends 'main/base.html' %}
+
+<!-- Styles -->
+{% block styles %}
+    <style>
+        /* Image Slides */
+        .img-selector {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color:black;
+            color:green;
+            height: 450px
+        }
+
+        .img-slide {
+            display:flex;
+            height:450px
+        }
+
+        .img-button {
+            font-size:48px;
+            border:none;
+            background-color:blue;
+            width:50px;
+            height:50px;
+            border-radius: 50%;
+        }
+
+        .img-button:hover {
+            background: green;
+            color: white
+        }
+    </style>
+{% endblock %}
+
+<!-- Image Slide -->
+{% block content %}
+    <!-- Image Slide Container -->
+    <div>
+        <!-- Header -->
+        <h1 style="text-align:center">How We Care</h1>
+        <!-- Image Slide Div -->
+        <div class="img-selector">
+
+            <!-- Left Slide Button -->
+            <button class="img-button" id="prev-img" onclick="Prev()"><</button>
+
+            <!-- Images Appear here -->
+            <div class="img-slide">
+                <img id="Image" src="{{ Image_Slides.first.image.url }}">
+            </div>
+
+            <!-- Right Slide Button -->
+            <button class="img-button" id="next-img" onclick="Next()">></button>
+
+        </div>
+    </div>
+    <!-- Paragraph Bio -->
+    <p style="text-align: center; font-family: 'Comic Sans MS', sans-serif">
+        Edwards Shop & Tire Replacement stands as a beacon of exceptional service in the community, renowned for its unwavering commitment to automotive excellence.
+        With a reputation built on trust and reliability, Edwards Shop has consistently provided top-notch tire replacements and comprehensive car maintenance solutions.
+        Their team of skilled professionals combines extensive expertise with a genuine passion for customer care, ensuring every vehicle is handled with precision and respect.
+        Beyond their technical proficiency, Edwards Shop is deeply ingrained in the community, often participating in local events and supporting neighborhood initiatives.
+        Their dedication to both quality service and community involvement makes Edwards Shop & Tire Replacement a cherished asset to all who rely on their expertise.
+    </p>
+
+{% endblock %}
+
+{% block Javascript %}
+
+    <script>
+        // Javascript list to hold the Urls
+        var img = [
+            {% for i in Image_Slides %}
+            "{{ i.image.url }}",
+            {% endfor %}
+        ];
+
+        // Our current index
+        let currentIndex = 0;
+
+        // Next Image
+        function Next(){
+            currentIndex += 1
+            if (currentIndex > img.length - 1) {
+                currentIndex = 0
+            }
+            document.getElementById("Image").src = img[currentIndex]
+
+        }
+        // Previous Image
+        function Prev() {
+            currentIndex -= 1
+            if (currentIndex < 0) {
+                currentIndex = img.length - 1
+            }
+            document.getElementById("Image").src = img[currentIndex]
+        }
+
+        // Transitional Slide every 10 seconds or 10000 milliseconds
+        setInterval(Next, 10000);
+
+    </script>
+{% endblock %}

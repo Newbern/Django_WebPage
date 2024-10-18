@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-image: url("https://s19532.pcdn.co/wp-content/uploads/2020/08/Sourcebook-Passenger-Tires.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            image-resolution: normal;
+            background: white;
+
+
+        }
+        /* Top bar */
+        .topbar {
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            background-color: orange;
+            color:white;
+            height: 200px;
+            justify-content:space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration:none;
+            color:white;
+
+
+
+        }
+        /* Sidebar and attributes*/
+        .sidebar {
+            height:100%;
+            width:0;
+            position: fixed;
+            top: 0;
+            z-index: 1;
+            background-color: darkorange;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            color:white;
+            display: block;
+            transition: 0.3s;
+            text-align:center;
+            font-weight: bold;
+            font-size: 25px
+    }
+
+        .sidebar a:hover {
+            background-color: red;
+            color: black;
+        }
+
+        /* Left Sidebar side */
+        .left-sidebar {
+            left: 0;
+        }
+
+        /* Right sidebar side */
+        .right-sidebar {
+            right:0;
+        }
+
+        /* Bottom Button config */
+        .bottom-btn {
+            position: absolute;
+            right: 0;
+            bottom: 75px
+        }
+        /* Opening buttons attributes */
+        .openbtn {
+            cursor: pointer;
+        }
+
+        /* Closing Buttons attributes */
+        .closebtn {
+            position: absolute;
+            top:0;
+            font-size: 36px;
+        }
+
+
+        /* Hamburger Button configurations*/
+        .hamburger-button {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            width: 50px; /* Adjust the width as per your preference */
+            height: 50px; /* Adjust the height as per your preference */
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 100%;
+            height: 4px; /* Adjust the height of the bars */
+            background-color: black; /* Adjust the color of the bars */
+        }
+
+        /* Socials */
+        .socials {
+            display:flex;
+            justify-content: space-evenly;
+            padding: 0 100px 50px 100px
+        }
+
+        .socials a{
+            text-decoration: none;
+            color: black;
+
+        }
+
+    </style>
+
+    <!-- Extra styles -->
+    {% block styles %}{% endblock %}
+
+    <title>{% block title %}Edwards Shop & Tire Replacement{% endblock %}</title>
+</head>
+<body>
+
+
+
+<!-- This is the Top Bar -->
+<div class="topbar">
+
+    <!-- This is The Left Sidebar-->
+    <span class="openbtn" onclick="openSidebar('left')">
+        <!-- Our Left Hamburger Button -->
+        <button class="hamburger-button">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </button>
+    </span>
+
+    <!-- Logo -->
+    <a class="logo" href="/">LOGO</a>
+
+    <!-- This is the Right Sidebar-->
+    <span class="openbtn" onclick="openSidebar('right')">
+        <!-- loading Profile Image -->
+        <img src="{{ Profile_Image }}"
+             alt="Account"
+             width="50"
+             height="50"
+        style="border-radius:50%"
+        >
+
+    </span>
+
+
+</div>
+
+<!-- Everything containing on the Left Side bar -->
+<div id="leftSidebar" class="sidebar left-sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar('left')" style="right:0">&times;</a>
+    <a href="/parts">Parts</a>
+    <a href="#">Map</a>
+    <a href="#">Payment</a>
+    <a href="/contact">Contacts</a>
+</div>
+
+<!-- Everything containing on the Right Sidebar -->
+<div id="rightSidebar" class="sidebar right-sidebar">
+    <a href="javascript:voic(0)" class="closebtn" onclick="closeSidebar('right')" style="left:0">&times;</a>
+    {% if user.is_authenticated %}
+        <a href="/account">Account</a>
+        <a href="/cart">Cart</a>
+        <a href="/admin" class="bottom-btn">Logout</a>
+
+    {% else %}
+        <a href="#">Sign up</a>
+        <a href="#">Login</a>
+        <a href="/admin" class="bottom-btn">Help</a>
+    {% endif %}
+</div>
+
+
+<!-- Contents -->
+<div style="margin:100px">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Social Media -->
+    <div class="socials">
+        <a href="https://facebook.com"><img src="https://static.xx.fbcdn.net/rsrc.php/v3/yG/r/pENh3y_2Pnw.png" height="50" width="50"></a>
+        <a href="https://x.com"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQatdy5z0N7MCb3l46oxDIrSq96-3FHCA8UOQ&s" height="50" width="50"></a>
+        <a href="https://instagram.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/640px-Instagram_logo_2022.svg.png" height="50" width="50"></a>
+    </div>
+
+<!-- Our Javascript Functions to Open & close those sidebars -->
+<script>
+    // Opening and Closing Sidebars
+    function openSidebar(side) {
+        if (side === 'left'){
+            document.getElementById('leftSidebar').style.width = '250px';
+            document.getElementById('rightSidebar').style.width = '0'
+        }
+        else if  (side === 'right'){
+            document.getElementById('rightSidebar').style.width = "250px";
+            document.getElementById('leftSidebar').style.width = '0'
+        }
+    }
+    function closeSidebar(side) {
+        if (side === 'left') {
+            document.getElementById('leftSidebar').style.width = "0";
+        }
+        else if (side === 'right') {
+            document.getElementById('rightSidebar').style.width = "0";
+        }
+    }
+
+
+</script>
+
+<!-- Extra Javascript Code -->
+{% block Javascript %}{% endblock %}
+
+</body>
+</html>

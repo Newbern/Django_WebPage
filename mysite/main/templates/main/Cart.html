@@ -1,0 +1,97 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Ready for Purchases?{% endblock %}
+
+{% block styles %}
+    <style>
+        .order {
+            border-color: darkgray;
+            border-style: solid;
+            border-width: thick;
+            display:block;
+        }
+
+        .item {
+            display:flex;
+            align-items: center;
+            margin-left:15%;
+            margin-right:15%
+        }
+
+        .button-config {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            gap:25px
+        }
+        .order-btn {
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <h1 style="text-align:center">Cart</h1>
+
+    <!-- Checking for cart data -->
+    {% if cart %}
+        <!-- Whole Parts container -->
+        <div class="order">
+            {% for item, amount in cart.items %}
+                {% for part in parts %}
+                    {% if item == part.name %}
+                        <!-- Part item {{ part.name }} -->
+                        <div class="item">
+                        <div style="display:flex">
+                            <!-- Image -->
+                            <img src="{{ part.image.url }}" alt="{{ part.name }}" width="200" height="200">
+                            <!-- Text -->
+                            <div>
+                                <h2>{{ item }}</h2>
+                                <h3>{{ part.price }}</h3>
+                            </div>
+                        </div>
+                            <div style="margin-left:auto; margin-right:50px">
+                                <!-- Amount -->
+                                <div class="button-config">
+                                    <button onclick="Add(-1)">&minus;</button>
+                                    <p id="amount">{{ amount }}</p>
+                                    <button onclick="Add(1)">&plus;</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+
+        </div>
+        <!-- Submit Order -->
+        <button>Submit Order</button>
+    <!-- If no data is found -->
+    {% else %}
+        <h1>Not Found</h1>
+    {% endif %}
+{% endblock %}
+
+{% block Javascript %}
+    <script>
+        let num = 0;
+        let max =
+        function Add(range) {
+            if (num+range > 0) {
+                num += range
+                if (num < 0) {
+                    num = 0
+                }
+            }
+            else {
+                num = 0
+            }
+            document.getElementById('amount').innerText = num;
+            document.getElementById("cart_num").value = num
+        }
+    </script>
+{% endblock %}
