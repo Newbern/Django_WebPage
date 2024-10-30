@@ -1,0 +1,109 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Where were located{% endblock %}
+
+{% block styles %}
+    <style>
+    .base {
+        display:flex;
+        flex-direction: column;
+        align-items:center;
+        border: solid;
+        margin: auto;
+        width: min-content;
+        height: min-content;
+    }
+    .copy {
+        display:flex;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .color {
+        padding-left:10px;
+        background-color:red;
+        border-radius: 100%;
+        width:1px;
+        border: solid
+    }
+    .pop {
+        display:flex;
+        justify-content: center;
+        color:red;
+        font-style:italic;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="base">
+        <h1>FIND US HERE!</h1>
+        <img src="https://www.pinmaps.net/Images/homecr/home-page-image.png">
+    </div>
+    <!-- Link Address -->
+    <div class="copy">
+        <button id="btn" onclick="Copy()">Copy Address</button>
+        <!-- Indicator -->
+        <div id="Indicator" class="color"></div>
+    </div>
+    <!-- Text popup -->
+    <div class ="pop" id ="pop"></div>
+{% endblock %}
+
+{% block Javascript %}
+    <script>
+    let num = 0
+
+    // Copying to ClipBoard
+    function Copy(){
+        document.getElementById("btn").addEventListener('click', function(){
+            // Text for ClipBoard
+            const text = "https://github.com/Newbern";
+
+            // Use the Clipboard API to write text to clipboard
+            navigator.clipboard.writeText(text)
+        })
+
+        // Changing Indicator
+        Indicator()
+    }
+
+    // Webpage Response
+    function Indicator(){
+        // Changing Indicator Color
+        document.getElementById('Indicator').style.backgroundColor = 'green';
+
+        // Create Element
+        const element = document.createElement('p');
+
+        let words;
+
+        if (num === 0){
+            // Creating Complete Text
+            words = "Copy Complete!"
+        }
+        else if (num === 1){
+            // Creating Error Text
+            words = "Error with copying to Clipboard!"
+        }
+        else {
+            words = ""
+        }
+
+        // Changing num
+        num = -1
+
+        let text = document.createTextNode(words)
+
+
+        // Adding Paragraph Warning
+        element.appendChild(text);
+
+        // Appending to a div container
+        document.getElementById('pop').appendChild(element)
+
+
+    }
+    </script>
+{% endblock %}

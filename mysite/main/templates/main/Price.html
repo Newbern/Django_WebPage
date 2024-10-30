@@ -1,0 +1,57 @@
+{% extends "main/base.html" %}
+
+{% block title %}Your Total Price{% endblock %}
+
+{% block styles %}
+    <style>
+    .config {
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        font-family: monospace;
+        font-size: xx-large;
+        border:solid;
+
+    }
+
+    .order-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+    .order-btn a {
+        width: 25%;
+        font-size: 25px;
+        font-weight: bold;
+        background-color: lightgoldenrodyellow;
+        color: cornflowerblue;
+        font-style: italic;
+        font-family: monospace;
+        text-align: center;
+        border-style:solid;
+        border-color:black;
+        text-decoration-line:none;
+    }
+
+    .order-btn a:hover {
+        color: red;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="order-btn" style="flex-direction: row; width:25%">
+        <a class="order-btn" href="/cart/"><</a>
+    </div>
+
+    <div class="config">
+        <h1>Total</h1>
+        <h3>{{ total }}</h3>
+    </div>
+    <!-- Return Home -->
+    <div class="order-btn">
+        <a style="" href="/">Home</a>
+    </div>
+{% endblock %}

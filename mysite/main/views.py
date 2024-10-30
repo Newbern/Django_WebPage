@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import Account, ImageSlide, Image, Part
 from .forms import UpdateAccount
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 
 # Getting Profile Image
@@ -41,6 +42,7 @@ def account(request):
 
     return render(request, "main/Account.html", {"Profile_Image": image(request), "form":form})
 
+
 # Cart
 def cart(request):
     # Getting Account Cart
@@ -51,6 +53,7 @@ def cart(request):
     for item in list(cart):
         if cart[item] == "0":
             cart.pop(item)
+
     # Saving Cart list
     info.save()
 
@@ -105,15 +108,45 @@ def parts(request):
             # Saving Request
             info.save()
 
-
         else:
             print(f"None in Cart: {cart_num}")
 
-
     return render(request, 'main/Parts.html', {"Profile_Image": image(request), "items": items})
 
+
 # Map
-# Payment
+def map(request):
+    return render(request, "main/Map.html", {"Profile_Image": image(request)})
+
+
+# Total Price
+def price(request):
+    # Updating Data
+    if request.method == "POST":
+        x = request.POST.get('list')
+        print("sup",x)
+
+    # Cart
+    cart = Account.objects.filter(user=request.user)[0].cart
+
+    # Items in Cart
+    quantity = [i for i in cart.values()]
+
+    price = 0
+    # Getting Price Total
+    for item, amount in zip(cart, quantity):
+        part = Part.objects.filter(name=item)[0]
+        if part.name:
+            # Turning the price string into a Decimal for precise amount
+            moneys = Decimal(part.price.split("$")[1])
+            price += moneys * Decimal(amount)
+
+    # Collected Total
+    price = "$" + str(price)
+
+    return render(request, 'main/Price.html', {"Profile_Image": image(request), "total": price})
+
+
 # Contacts
 def contacts(request):
     return render(request, "main/Contacts.html", {"Profile_Image": image(request)})

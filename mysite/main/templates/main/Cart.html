@@ -24,8 +24,32 @@
             align-items: center;
             gap:25px
         }
-        .order-btn {
 
+        .order-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .order-btn a, button {
+            font-size: 25px;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+            color: cornflowerblue;
+            font-style: italic;
+            font-family: monospace;
+            text-align: center;
+            border-style:solid;
+            border-color:black;
+            text-decoration-line:none;
+        }
+
+        .order-btn a {
+            width:25%;
+        }
+
+        .order-btn a:hover, button:hover {
+            color: red;
         }
 
     </style>
@@ -42,7 +66,7 @@
             {% for item, amount in cart.items %}
                 {% for part in parts %}
                     {% if item == part.name %}
-                        <!-- Part item {{ part.name }} -->
+                        <!-- {{ part.name }} -->
                         <div class="item">
                         <div style="display:flex">
                             <!-- Image -->
@@ -54,11 +78,11 @@
                             </div>
                         </div>
                             <div style="margin-left:auto; margin-right:50px">
-                                <!-- Amount -->
+                                <!-- {{ part.name }} Amount -->
                                 <div class="button-config">
-                                    <button onclick="Add(-1)">&minus;</button>
-                                    <p id="amount">{{ amount }}</p>
-                                    <button onclick="Add(1)">&plus;</button>
+                                    <button onclick="Add('{{ part.name }}', -1)">&minus;</button>
+                                    <p id='{{ part.name }}'>{{ amount }}</p>
+                                    <button onclick="Add('{{ part.name }}', 1)">&plus;</button>
                                 </div>
                             </div>
                         </div>
@@ -68,8 +92,18 @@
 
 
         </div>
-        <!-- Submit Order -->
-        <button>Submit Order</button>
+        <div class="order-btn">
+            <form method="POST" action="/price/">
+                {% csrf_token %}
+                <!-- Submit Order -->
+                {% for i in cart %}
+                    <input type="hidden" name="{{ i.name }}" value="0">
+                {% endfor %}
+                <button type="submit" name="list" value="{{ cart }}">Submit Order</button>
+            </form>
+            <!-- Continue Shopping -->
+            <a href="/parts/">Continue Shopping</a>
+        </div>
     <!-- If no data is found -->
     {% else %}
         <h1>Not Found</h1>
@@ -78,9 +112,9 @@
 
 {% block Javascript %}
     <script>
-        let num = 0;
-        let max =
-        function Add(range) {
+        function Add(name, range) {
+            // turns the string into an integer
+            let num = +document.getElementById(name).innerText;
             if (num+range > 0) {
                 num += range
                 if (num < 0) {
@@ -90,8 +124,13 @@
             else {
                 num = 0
             }
-            document.getElementById('amount').innerText = num;
-            document.getElementById("cart_num").value = num
+            document.getElementById(name).innerText = num;
+
+        }
+
+        function info() {
+            document.getElementById("list")
+            return 0
         }
     </script>
 {% endblock %}
