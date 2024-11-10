@@ -9,17 +9,45 @@
         background-color: gray;
         padding-left:150px
     }
+    .whole {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .name {
+        padding-bottom:10px
+    }
+    .file {
+        border:solid;
+    }
+    .save-btn {
+        background-color: darkseagreen;
+        color: aliceblue;
+        width: 10%;
+        font-family: cursive;
+        font-size: large;
+    }
     </style>
 {% endblock %}
 
 {% block content %}
     <!-- Header -->
     <h1 style="text-align: center">Account Settings</h1>
-
-    <!-- Form -->
-    <form class="account-settings" method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ forms }}
-        <button type="submit">Update</button>
+        <div class="whole">
+            <!-- Changing Name -->
+            <div class="name">
+                <input name="name" type="text" value="{{ name }}" >
+            </div>
+            <!-- Changing Profile Image -->
+            <div class="file">
+                <img src="{{ img }}" width="120">
+                <input type="file" name="img">
+            </div>
+            <!-- Submit -->
+            <button class="save-btn">Save</button>
+        </div>
     </form>
 {% endblock %}

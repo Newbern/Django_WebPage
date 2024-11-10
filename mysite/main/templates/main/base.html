@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}{% endblock %}
 
     <style>
         body {
-            background-image: url("https://s19532.pcdn.co/wp-content/uploads/2020/08/Sourcebook-Passenger-Tires.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            image-resolution: normal;
-            background: white;
-
-
         }
         /* Top bar */
         .topbar {
@@ -180,12 +173,12 @@
     {% if user.is_authenticated %}
         <a href="/account">Account</a>
         <a href="/cart">Cart</a>
-        <a href="/admin" class="bottom-btn">Logout</a>
+        <a href="/logout" class="bottom-btn">Logout</a>
 
     {% else %}
-        <a href="#">Sign up</a>
-        <a href="#">Login</a>
-        <a href="/admin" class="bottom-btn">Help</a>
+        <a href="/register">Sign up</a>
+        <a href="/login">Login</a>
+        <a href="/admin" class="bottom-btn">Admin</a>
     {% endif %}
 </div>
 

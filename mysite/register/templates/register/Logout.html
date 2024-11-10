@@ -1,0 +1,51 @@
+{% extends 'register/base.html' %}
+
+{% block styles %}
+    <style>
+    .box {
+        display:flex;
+        background-color:orange;
+        flex-direction:column;
+        text-align:center;
+        border:solid;
+        margin: 10%
+    }
+    .arrow {
+        display: flex;
+        align-items: center;
+        width: 25%;
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .arrow a {
+        font-size: 25px;
+        font-weight: bold;
+        background-color: lightgoldenrodyellow;
+        color: cornflowerblue;
+        font-style: italic;
+        font-family: monospace;
+        text-align: center;
+        border-style: solid;
+        border-color: black;
+        text-decoration-line: none;
+    }
+    </style>
+{% endblock %}
+
+{% block title %}GoodBye! | We Will Miss you{% endblock %}
+<!-- No Wallpaper -->
+{% block bg %}{% endblock %}
+
+
+{% block content %}
+    <!-- Back arrow -->
+        <div class="arrow">
+            <a class="arrow" href="/"><</a>
+        </div>
+    <div class="box">
+        <h1 style="font-family:cursive">Logout Successful!</h1>
+        <p>Please close window</p>
+    </div>
+{% endblock %}
+

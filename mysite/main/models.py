@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # The Account holding there image
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(default="...", max_length=100)
     image = models.ImageField(upload_to='AccountImages/', default="AccountImages/Guest")
     cart = models.JSONField(default=dict, blank=True)
 
@@ -13,23 +14,28 @@ class Account(models.Model):
 
     # Changing Image Name
     def save(self, *args, **kwargs):
-        # Setting image as default if no image was selected
-        if self.image == "AccountImages/Guest":
-            pass
+        # Changing name if no name was selected
+        if self.name == "...":
+            self.name = self.user
+        print(self.image.name)
+        try:
+            # Setting image as default if no image was selected
+            if self.image == "AccountImages/Guest":
+                pass
 
-        # Checking to see if the Image is already named
-        elif not self.image.name.count(self.user.username):
-            self.image.name = self.user.username
+            # Checking to see if the Image is already named
+
+            elif not self.image.name.count(self.user.username):
+                self.image.name = self.user.username
+        except:
+            pass
 
         # Saving data
         super().save()
 
     # Deleting Image
     def delete(self, using=None, keep_parents=False):
-        if not self.image == "Guest" or not self.image == "AccountImages/Guest":
-            super().delete()
-            import os
-            os.remove(self.image.path)
+        super().delete()
 
 
 # The ImageSlide container

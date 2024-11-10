@@ -1,0 +1,88 @@
+{% extends 'register/base.html' %}
+
+{% block styles %}
+    <style>
+        .create {
+            background-color: orange;
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            border-radius: 2%;
+            padding: 25px;
+            height:{% block tall %} 525px{% endblock %};
+        }
+
+        .btn {
+            margin-top: 50px;
+            margin-inline: 50px;
+            background-color: lightgoldenrodyellow;
+            font-family: cursive;
+            font-size: medium;
+            border-radius:12px;
+        }
+
+        .btn button:hover {
+            color: cornflowerblue;
+        }
+
+        .arrow {
+                display: flex;
+                align-items: center;
+                width: 25%;
+                margin-top: 10px;
+                justify-content: center;
+        }
+
+        .arrow a {
+            font-size: 25px;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+            color: cornflowerblue;
+            font-style: italic;
+            font-family: monospace;
+            text-align: center;
+            border-style: solid;
+            border-color: black;
+            text-decoration-line: none;
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block title %}Sign up!{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <!-- Back arrow -->
+        <div class="arrow">
+            <a class="arrow" href="/"><</a>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" class="form-signin" style="display:flex; justify-content: center">
+            {% csrf_token %}
+
+            <div class="create">
+                <!-- Label -->
+                <h2 class="form-signin-heading" style="text-align:center;">{% block name %}Create Account{% endblock %}</h2>
+                <!-- Collecting Form -->
+                {{ form }}
+                <!-- Error Message -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color:red;">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                <!-- Submit button -->
+                <button class="btn">{% block log %}Create{% endblock %}</button>
+                <!-- Link -->
+                <div style="margin: 25px auto auto;">
+                    {% block link %}<p>Have an Account? | <a href="/login" >Login Here</a></p>{% endblock %}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
