@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Account, ImageSlide, Image, Part
-from .forms import UpdateAccount
 from django.contrib.auth.models import User
 from decimal import Decimal
+import ast
 
 
 # Getting Profile Image
@@ -32,15 +32,31 @@ def home(request):
 # Account Page
 def account(request):
     print(request.method)
+    info = Account.objects.filter(user=request.user)[0]
+    name = img = None
     if request.method == "POST":
-        form = UpdateAccount(request.POST)
-        if form.is_valid():
-            ""
-        else:
-            form = UpdateAccount()
+        # Updating Name
+        info.name = request.POST.get("name")
+
+        # Updating Image
+        if request.POST.get("img") != "":
+            info.image.delete()
+            info.image = request.FILES.get("img")
+
+        # Saving
+        info.save()
+        return redirect('account')
+
+    elif request.method == "GET":
+        name = info.name
+        img = info.image.url
+
+    print(name)
+    print(img)
 
 
-    return render(request, "main/Account.html", {"Profile_Image": image(request), "form":form})
+
+    return render(request, "main/Account.html", {"Profile_Image": image(request), "name": name, "img": img})
 
 
 # Cart
@@ -67,7 +83,7 @@ def cart(request):
             if item == part.name:
                 parts_lst.append(part)
 
-    return render(request, 'main/Cart.html', {'Profile_Image': image(request), "cart": cart, "parts":parts_lst})
+    return render(request, 'main/Cart.html', {'Profile_Image': image(request), "cart": cart, "parts": parts_lst})
 
 
 # Parts
@@ -121,13 +137,15 @@ def map(request):
 
 # Total Price
 def price(request):
-    # Updating Data
-    if request.method == "POST":
-        x = request.POST.get('list')
-        print("sup",x)
 
     # Cart
-    cart = Account.objects.filter(user=request.user)[0].cart
+    info = Account.objects.filter(user=request.user)[0]
+    cart = info.cart
+    # Updating Data
+    if request.method == "POST":
+        data = ast.literal_eval(request.POST.get("list"))
+        info.cart.update(data)
+        info.save()
 
     # Items in Cart
     quantity = [i for i in cart.values()]

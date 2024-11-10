@@ -81,7 +81,7 @@
                                 <!-- {{ part.name }} Amount -->
                                 <div class="button-config">
                                     <button onclick="Add('{{ part.name }}', -1)">&minus;</button>
-                                    <p id='{{ part.name }}'>{{ amount }}</p>
+                                    <p id='{{ part.name }}' >{{ amount }}</p>
                                     <button onclick="Add('{{ part.name }}', 1)">&plus;</button>
                                 </div>
                             </div>
@@ -96,10 +96,7 @@
             <form method="POST" action="/price/">
                 {% csrf_token %}
                 <!-- Submit Order -->
-                {% for i in cart %}
-                    <input type="hidden" name="{{ i.name }}" value="0">
-                {% endfor %}
-                <button type="submit" name="list" value="{{ cart }}">Submit Order</button>
+                <button type="submit" name="list" id="list" value="nothing" onclick="info()">Submit Order</button>
             </form>
             <!-- Continue Shopping -->
             <a href="/parts/">Continue Shopping</a>
@@ -112,6 +109,8 @@
 
 {% block Javascript %}
     <script>
+        const lst = [{% for i in cart %}"{{ i }}",{% endfor %}];
+        let new_lst = new Map();
         function Add(name, range) {
             // turns the string into an integer
             let num = +document.getElementById(name).innerText;
@@ -125,12 +124,15 @@
                 num = 0
             }
             document.getElementById(name).innerText = num;
-
         }
 
         function info() {
-            document.getElementById("list")
-            return 0
+            for (let i = 0; i < lst.length; i++){
+                new_lst.set(lst[i], document.getElementById(lst[i]).innerText)
+            }
+            document.getElementById('list').value = JSON.stringify(Object.fromEntries(new_lst))
         }
+
+
     </script>
 {% endblock %}
