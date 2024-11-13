@@ -1,5 +1,3 @@
-# INCOMPLETE PROJECT
-
 
 # Django Webpage
 
